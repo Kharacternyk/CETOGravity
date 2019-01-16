@@ -3,10 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         xmlns:local="clr-namespace:CETOGravity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="CETO" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <oxy:PlotView Name="plotX" Grid.Row="0"></oxy:PlotView>
+        <oxy:PlotView Name="plotY" Grid.Row="1"></oxy:PlotView>
     </Grid>
 </Window>
