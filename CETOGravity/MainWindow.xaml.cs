@@ -69,7 +69,7 @@ namespace CETOGravity
                         new AxisStatus(),
                         double.Parse(shipMassBox.Text)
                     ),
-                    c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], K, alpha)
+                    c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], alpha)
                 );
 
                 var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
@@ -77,18 +77,18 @@ namespace CETOGravity
 
                 context.Tick(double.Parse(timeSpanBox.Text));
 
+                var title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
+                            $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
+                            $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}";
+
                 var xSeries = new LineSeries()
                 {
-                    Title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
-                    $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
-                    $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}"
+                    Title = title
                 };
                 xSeries.Points.AddRange(from p in xTracker select new DataPoint(p.Key * dt, p.Value));
                 var ySeries = new LineSeries()
                 {
-                    Title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
-                    $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
-                    $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}"
+                    Title = title
                 };
                 ySeries.Points.AddRange(from p in yTracker select new DataPoint(p.Key * dt, p.Value));
 
@@ -103,13 +103,13 @@ namespace CETOGravity
             }
         }
 
-        private Force ModifiedGravityLaw<TEntityKey>(in PointMass ship, in PointMass planet, double k, double alpha)
+        private Force ModifiedGravityLaw<TEntityKey>(in PointMass ship, in PointMass planet, double alpha)
         {
             var xDistance = ship.X.Position - planet.X.Position;
             var yDistance = ship.Y.Position - planet.Y.Position;
             var distance = Math.Sqrt(xDistance * xDistance + yDistance * yDistance);
 
-            var forceValue = k / Math.Pow(distance, 2 + alpha);
+            var forceValue = K / Math.Pow(distance, 2 + alpha);
             return new Force
             (
                 -forceValue * xDistance / distance,
