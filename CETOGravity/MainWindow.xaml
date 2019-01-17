@@ -11,8 +11,59 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <!-- Progress bar row -->
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <oxy:PlotView Name="plotX" Grid.Row="0"></oxy:PlotView>
-        <oxy:PlotView Name="plotY" Grid.Row="1"></oxy:PlotView>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <oxy:PlotView Name="plotX" Grid.Row="0" Grid.Column="1"></oxy:PlotView>
+        <oxy:PlotView Name="plotY" Grid.Row="1" Grid.Column="1"></oxy:PlotView>
+        <UniformGrid Columns="2" Grid.Row="2" Grid.Column="0">
+            <GroupBox Header="X axis">
+                <StackPanel>
+                    <GroupBox Header="Position">
+                        <TextBox Name="xPosBox">1</TextBox>
+                    </GroupBox>
+                    <GroupBox Header="Velocity">
+                        <TextBox Name="xVelBox">0</TextBox>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Y axis">
+                <StackPanel>
+                    <GroupBox Header="Position">
+                        <TextBox Name="yPosBox">0</TextBox>
+                    </GroupBox>
+                    <GroupBox Header="Velocity">
+                        <TextBox Name="yVelBox">1</TextBox>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+        </UniformGrid>
+        <UniformGrid Columns="2" Grid.Column="1" Grid.Row="2">
+            <GroupBox Header="General">
+                <StackPanel>
+                    <GroupBox Header="Ship mass">
+                        <TextBox Name="shipMassBox">1</TextBox>
+                    </GroupBox>
+                    <GroupBox Header="dt">
+                        <TextBox Name="dtBox">1e-3</TextBox>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel>
+                <GroupBox Header="Alpha value">
+                    <TextBox Name="alphaValueBox">0,01</TextBox>
+                </GroupBox>
+                <GroupBox Header="Time span">
+                    <TextBox Name="timeSpanBox">10</TextBox>
+                </GroupBox>
+                <Button Click="EvalButton_Click"> Eval </Button>
+                <Button Click="ClearButton_Click"> Clear </Button>
+            </StackPanel>
+        </UniformGrid>
     </Grid>
 </Window>

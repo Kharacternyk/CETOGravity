@@ -21,27 +21,38 @@ namespace CETOGravity
 {
     public partial class MainWindow : Window
     {
-        readonly double[] alphaArray = { 0.01, 0.1, 0.5 };
-        const double dt = 0.001;
         const double K = 1;
-        const double ORBIT = 1;
-        const double START_VELOCITY = 1;
-        const double MASS = 1;
-        const double TIME = 50;
 
         enum Entities { Ship, Planet }
 
         public MainWindow()
         {
-            InitializeComponent();
-            plotX.Model = new PlotModel() { Title = "x(t)", IsLegendVisible = true, LegendPlacement = LegendPlacement.Outside };
-            plotY.Model = new PlotModel() { Title = "y(t)", IsLegendVisible = true, LegendPlacement = LegendPlacement.Outside };
+            InitializeComponent();            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (var alpha in alphaArray)
+            plotX.Model = new PlotModel()
             {
+                Title = "x(t)",
+                IsLegendVisible = true,
+                LegendPosition = LegendPosition.RightTop,
+                LegendFontSize = 10
+            };
+            plotY.Model = new PlotModel()
+            {
+                Title = "y(t)",
+                IsLegendVisible = false
+            };
+        }
+
+        private void EvalButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var alpha = double.Parse(alphaValueBox.Text);
+                var dt = double.Parse(dtBox.Text);
+
                 var context = new PhysicalContext<Entities>(timePerTick: dt, capacity: 2);
                 context.AddEntity
                 (
@@ -53,10 +64,10 @@ namespace CETOGravity
                     Entities.Ship,
                     new PointMass
                     (
-                        new AxisStatus(ORBIT),
-                        new AxisStatus(0, START_VELOCITY),
+                        new AxisStatus(double.Parse(xPosBox.Text), double.Parse(xVelBox.Text)),
+                        new AxisStatus(double.Parse(yPosBox.Text), double.Parse(yVelBox.Text)),
                         new AxisStatus(),
-                        MASS
+                        double.Parse(shipMassBox.Text)
                     ),
                     c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], K, alpha)
                 );
@@ -64,15 +75,31 @@ namespace CETOGravity
                 var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
                 var yTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].Y.Position);
 
-                context.Tick(TIME);
+                context.Tick(double.Parse(timeSpanBox.Text));
 
-                var xSeries = new LineSeries() { Title = alpha.ToString() };
+                var xSeries = new LineSeries()
+                {
+                    Title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
+                    $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
+                    $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}"
+                };
                 xSeries.Points.AddRange(from p in xTracker select new DataPoint(p.Key * dt, p.Value));
-                var ySeries = new LineSeries() { Title = alpha.ToString() };
+                var ySeries = new LineSeries()
+                {
+                    Title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
+                    $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
+                    $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}"
+                };
                 ySeries.Points.AddRange(from p in yTracker select new DataPoint(p.Key * dt, p.Value));
 
                 plotX.Model.Series.Add(xSeries);
                 plotY.Model.Series.Add(ySeries);
+                plotX.InvalidatePlot();
+                plotY.InvalidatePlot();
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -89,6 +116,14 @@ namespace CETOGravity
                 -forceValue * yDistance / distance,
                 0
             );
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            plotX.Model.Series.Clear();
+            plotY.Model.Series.Clear();
+            plotX.InvalidatePlot();
+            plotY.InvalidatePlot();
         }
     }
 }
