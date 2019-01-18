@@ -21,8 +21,6 @@ namespace CETOGravity
 {
     public partial class MainWindow : Window
     {
-        const double K = 1;
-
         enum Entities { Ship, Planet }
 
         public MainWindow()
@@ -50,6 +48,7 @@ namespace CETOGravity
         {
             try
             {
+                var k = double.Parse(kValBox.Text);
                 var alpha = double.Parse(alphaValueBox.Text);
                 var dt = double.Parse(dtBox.Text);
 
@@ -69,7 +68,7 @@ namespace CETOGravity
                         new AxisStatus(),
                         double.Parse(shipMassBox.Text)
                     ),
-                    c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], alpha)
+                    c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], alpha, k)
                 );
 
                 var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
@@ -103,13 +102,13 @@ namespace CETOGravity
             }
         }
 
-        private Force ModifiedGravityLaw<TEntityKey>(in PointMass ship, in PointMass planet, double alpha)
+        private Force ModifiedGravityLaw<TEntityKey>(in PointMass ship, in PointMass planet, double alpha, double k)
         {
             var xDistance = ship.X.Position - planet.X.Position;
             var yDistance = ship.Y.Position - planet.Y.Position;
             var distance = Math.Sqrt(xDistance * xDistance + yDistance * yDistance);
 
-            var forceValue = K / Math.Pow(distance, 2 + alpha);
+            var forceValue = k / Math.Pow(distance, 2 + alpha);
             return new Force
             (
                 -forceValue * xDistance / distance,

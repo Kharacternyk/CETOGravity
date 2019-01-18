@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition MinHeight="150" MaxHeight="200"></RowDefinition>
             <!-- Progress bar row -->
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
@@ -49,14 +49,17 @@
                     <GroupBox Header="Ship mass">
                         <TextBox Name="shipMassBox">1</TextBox>
                     </GroupBox>
-                    <GroupBox Header="dt">
-                        <TextBox Name="dtBox">1e-3</TextBox>
+                    <GroupBox Header="K value">
+                        <TextBox Name="kValBox">1</TextBox>
+                    </GroupBox>
+                    <GroupBox Header="Alpha value">
+                        <TextBox Name="alphaValueBox">0,01</TextBox>
                     </GroupBox>
                 </StackPanel>
             </GroupBox>
             <StackPanel>
-                <GroupBox Header="Alpha value">
-                    <TextBox Name="alphaValueBox">0,01</TextBox>
+                <GroupBox Header="dt">
+                    <TextBox Name="dtBox">1e-3</TextBox>
                 </GroupBox>
                 <GroupBox Header="Time span">
                     <TextBox Name="timeSpanBox">10</TextBox>
