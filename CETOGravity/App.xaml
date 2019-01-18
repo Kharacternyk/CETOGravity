@@ -4,6 +4,38 @@
              xmlns:local="clr-namespace:CETOGravity"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="2"></Setter>
+            <Setter Property="BorderThickness" Value="2"></Setter>
+            <Setter Property="BorderBrush" Value="LightBlue"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1">
+                        <GradientStop Color="White" Offset="0"></GradientStop>
+                        <GradientStop Color="LightBlue" Offset="0.5"></GradientStop>
+                        <GradientStop Color="White" Offset="1"></GradientStop>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontStyle" Value="Italic"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="White" Offset="0"></GradientStop>
+                        <GradientStop Color="LightBlue" Offset="0.8"></GradientStop>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
+        </Style>
     </Application.Resources>
 </Application>
