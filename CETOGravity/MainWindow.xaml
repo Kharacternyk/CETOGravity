@@ -23,6 +23,7 @@
         </Grid.ColumnDefinitions>
         <oxy:PlotView Name="plotX" Grid.Row="0" Grid.Column="1"></oxy:PlotView>
         <oxy:PlotView Name="plotY" Grid.Row="1" Grid.Column="1"></oxy:PlotView>
+        <oxy:PlotView Name="orbitPlot" Grid.RowSpan="2"></oxy:PlotView>
         <UniformGrid Columns="2" Grid.Row="2" Grid.Column="0">
             <GroupBox Header="X axis">
                 <ScrollViewer>
@@ -60,7 +61,7 @@
                             <TextBox Name="kValBox">1</TextBox>
                         </GroupBox>
                         <GroupBox Header="Alpha value">
-                            <TextBox Name="alphaValueBox">0,01</TextBox>
+                            <TextBox Name="alphaValueBox">0</TextBox>
                         </GroupBox>
                         <GroupBox Header="dt">
                             <TextBox Name="dtBox">1e-3</TextBox>
@@ -73,8 +74,10 @@
             </GroupBox>
             <StackPanel VerticalAlignment="Center">
                 <Button Click="EvalButton_Click"> Eval </Button>
+                <Button Click="CancelButton_Click"> Cancel </Button>
                 <Button Click="ClearButton_Click"> Clear </Button>
             </StackPanel>
         </UniformGrid>
+        <ProgressBar Name="progressBar" Minimum="0" Value="0" Grid.Row="3" Grid.ColumnSpan="2"></ProgressBar>
     </Grid>
 </Window>

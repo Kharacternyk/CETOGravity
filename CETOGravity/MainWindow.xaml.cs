@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,8 @@ namespace CETOGravity
     {
         enum Entities { Ship, Planet }
 
+        CancellationTokenSource _currOperation;
+
         public MainWindow()
         {
             InitializeComponent();            
@@ -33,24 +36,29 @@ namespace CETOGravity
             plotX.Model = new PlotModel()
             {
                 Title = "x(t)",
-                IsLegendVisible = true,
-                LegendPosition = LegendPosition.RightTop,
-                LegendFontSize = 10
+                IsLegendVisible = false
             };
             plotY.Model = new PlotModel()
             {
                 Title = "y(t)",
                 IsLegendVisible = false
             };
+            orbitPlot.Model = new PlotModel()
+            {
+                Title = "Orbit",
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendFontSize = 10
+            };
         }
 
-        private void EvalButton_Click(object sender, RoutedEventArgs e)
+        private async void EvalButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var k = double.Parse(kValBox.Text);
                 var alpha = double.Parse(alphaValueBox.Text);
                 var dt = double.Parse(dtBox.Text);
+                var timeSpan = double.Parse(timeSpanBox.Text);
 
                 var context = new PhysicalContext<Entities>(timePerTick: dt, capacity: 2);
                 context.AddEntity
@@ -74,11 +82,15 @@ namespace CETOGravity
                 var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
                 var yTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].Y.Position);
 
-                context.Tick(double.Parse(timeSpanBox.Text));
+                progressBar.Maximum = timeSpan;
+                context.OnTick += (c, _) => Dispatcher.Invoke(() => progressBar.Value = ((PhysicalContext<Entities>)c).Timer);
+                _currOperation = new CancellationTokenSource();
 
-                var title = $"Start position = ({xPosBox.Text};{yPosBox.Text})\n" +
-                            $"Start velocity = ({xVelBox.Text};{yVelBox.Text})\n" +
-                            $"Mass = {shipMassBox.Text}, Alpha = {alphaValueBox.Text}";
+                await Task.Run(() => context.Tick(timeSpan, _currOperation.Token));
+
+                var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
+                            $"Start velocity = ({xVelBox.Text}; {yVelBox.Text})\n" +
+                            $"Mass = {shipMassBox.Text}, K = {kValBox.Text}, Alpha = {alphaValueBox.Text}";
 
                 var xSeries = new LineSeries()
                 {
@@ -90,11 +102,23 @@ namespace CETOGravity
                     Title = title
                 };
                 ySeries.Points.AddRange(from p in yTracker select new DataPoint(p.Key * dt, p.Value));
+                var orbitSeries = new LineSeries()
+                {
+                    Title = title
+                };
+                for (ulong i = 0; i < context.Ticks; ++i)
+                {
+                    orbitSeries.Points.Add(new DataPoint(xTracker[i], yTracker[i]));
+                }
 
                 plotX.Model.Series.Add(xSeries);
                 plotY.Model.Series.Add(ySeries);
+                orbitPlot.Model.Series.Add(orbitSeries);
                 plotX.InvalidatePlot();
                 plotY.InvalidatePlot();
+                orbitPlot.InvalidatePlot();
+
+                progressBar.Value = 0;
             }
             catch (FormatException ex)
             {
@@ -121,8 +145,15 @@ namespace CETOGravity
         {
             plotX.Model.Series.Clear();
             plotY.Model.Series.Clear();
+            orbitPlot.Model.Series.Clear();
             plotX.InvalidatePlot();
             plotY.InvalidatePlot();
+            orbitPlot.InvalidatePlot();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _currOperation?.Cancel();
         }
     }
 }
