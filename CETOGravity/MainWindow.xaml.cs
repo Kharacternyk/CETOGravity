@@ -99,7 +99,7 @@ namespace CETOGravity
                 };
                 for (ulong i = 0; i < context.Ticks; ++i)
                 {
-                    if (i % interval == 0) xSeries.Points.Add(new DataPoint(i, xTracker[i]));
+                    if (i % interval == 0) xSeries.Points.Add(new DataPoint(i * dt, xTracker[i]));
                 }
                 var ySeries = new LineSeries()
                 {
@@ -107,7 +107,7 @@ namespace CETOGravity
                 };
                 for (ulong i = 0; i < context.Ticks; ++i)
                 {
-                    if (i % interval == 0) ySeries.Points.Add(new DataPoint(i, yTracker[i]));
+                    if (i % interval == 0) ySeries.Points.Add(new DataPoint(i * dt, yTracker[i]));
                 }
                 var orbitSeries = new LineSeries()
                 {

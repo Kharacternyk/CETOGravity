@@ -32,7 +32,7 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <GroupBox Header="Position">
-                                        <TextBox Name="xPosBox">1</TextBox>
+                                        <TextBox Name="xPosBox">42150</TextBox>
                                     </GroupBox>
                                     <GroupBox Header="Velocity">
                                         <TextBox Name="xVelBox">0</TextBox>
@@ -47,7 +47,7 @@
                                         <TextBox Name="yPosBox">0</TextBox>
                                     </GroupBox>
                                     <GroupBox Header="Velocity">
-                                        <TextBox Name="yVelBox">1</TextBox>
+                                        <TextBox Name="yVelBox">3,0746</TextBox>
                                     </GroupBox>
                                 </StackPanel>
                             </ScrollViewer>
@@ -62,16 +62,16 @@
                             <TextBox Name="shipMassBox">1</TextBox>
                         </GroupBox>
                         <GroupBox Header="K value">
-                            <TextBox Name="kValBox">1</TextBox>
+                            <TextBox Name="kValBox">40e4</TextBox>
                         </GroupBox>
                         <GroupBox Header="Alpha value">
                             <TextBox Name="alphaValueBox">0</TextBox>
                         </GroupBox>
                         <GroupBox Header="dt">
-                            <TextBox Name="dtBox">1e-3</TextBox>
+                            <TextBox Name="dtBox">1</TextBox>
                         </GroupBox>
                         <GroupBox Header="Time span">
-                            <TextBox Name="timeSpanBox">10</TextBox>
+                            <TextBox Name="timeSpanBox">86400</TextBox>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
