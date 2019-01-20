@@ -46,7 +46,7 @@ namespace CETOGravity
             orbitPlot.Model = new PlotModel()
             {
                 Title = "Orbit",
-                LegendPosition = LegendPosition.BottomCenter,
+                LegendPosition = LegendPosition.TopLeft,
                 LegendFontSize = 10
             };
         }
@@ -86,8 +86,9 @@ namespace CETOGravity
                 context.OnTick += (c, _) => Dispatcher.Invoke(() => progressBar.Value = ((PhysicalContext<Entities>)c).Timer);
                 _currOperation = new CancellationTokenSource();
 
-                await Task.Run(() => context.Tick(timeSpan, _currOperation.Token));
+                await Task.Run(() => context.Tick(timeSpan, _currOperation.Token, false));
 
+                var interval = ulong.Parse(renderingIntervalBox.Text);
                 var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
                             $"Start velocity = ({xVelBox.Text}; {yVelBox.Text})\n" +
                             $"Mass = {shipMassBox.Text}, K = {kValBox.Text}, Alpha = {alphaValueBox.Text}";
@@ -96,19 +97,25 @@ namespace CETOGravity
                 {
                     Title = title
                 };
-                xSeries.Points.AddRange(from p in xTracker select new DataPoint(p.Key * dt, p.Value));
+                for (ulong i = 0; i < context.Ticks; ++i)
+                {
+                    if (i % interval == 0) xSeries.Points.Add(new DataPoint(i, xTracker[i]));
+                }
                 var ySeries = new LineSeries()
                 {
                     Title = title
                 };
-                ySeries.Points.AddRange(from p in yTracker select new DataPoint(p.Key * dt, p.Value));
+                for (ulong i = 0; i < context.Ticks; ++i)
+                {
+                    if (i % interval == 0) ySeries.Points.Add(new DataPoint(i, yTracker[i]));
+                }
                 var orbitSeries = new LineSeries()
                 {
                     Title = title
                 };
                 for (ulong i = 0; i < context.Ticks; ++i)
                 {
-                    orbitSeries.Points.Add(new DataPoint(xTracker[i], yTracker[i]));
+                    if (i % interval == 0) orbitSeries.Points.Add(new DataPoint(xTracker[i], yTracker[i]));
                 }
 
                 plotX.Model.Series.Add(xSeries);
@@ -120,9 +127,9 @@ namespace CETOGravity
 
                 progressBar.Value = 0;
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Your input is in invalid format.");
             }
         }
 
