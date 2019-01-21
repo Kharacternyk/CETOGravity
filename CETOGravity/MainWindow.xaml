@@ -62,7 +62,7 @@
                             <TextBox Name="shipMassBox">1</TextBox>
                         </GroupBox>
                         <GroupBox Header="K value">
-                            <TextBox Name="kValBox">40e4</TextBox>
+                            <TextBox Name="kValBox">3,9844e5</TextBox>
                         </GroupBox>
                         <GroupBox Header="Alpha value">
                             <TextBox Name="alphaValueBox">0</TextBox>
@@ -82,17 +82,17 @@
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="Rendering interval">
-                            <TextBox Name="renderingIntervalBox">1</TextBox>
+                            <TextBox Name="renderingIntervalBox">100</TextBox>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
             </GroupBox>
             <StackPanel VerticalAlignment="Center">
-                <Button Click="EvalButton_Click"> Eval </Button>
-                <Button Click="CancelButton_Click"> Cancel </Button>
-                <Button Click="ClearButton_Click"> Clear </Button>
+                <Button Click="EvalButton_Click"> _Eval </Button>
+                <Button Click="CancelButton_Click"> _Cancel </Button>
+                <Button Click="ClearButton_Click"> Cle_ar </Button>
             </StackPanel>
         </UniformGrid>
-        <ProgressBar Name="progressBar" Minimum="0" Value="0" Grid.Row="3" Grid.ColumnSpan="2"></ProgressBar>
+        <ProgressBar Name="progressBar" Minimum="0" Maximum="1" Value="0" Grid.Row="3" Grid.ColumnSpan="2"></ProgressBar>
     </Grid>
 </Window>

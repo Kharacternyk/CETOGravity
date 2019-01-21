@@ -25,6 +25,7 @@ namespace CETOGravity
         enum Entities { Ship, Planet }
 
         CancellationTokenSource _currOperation;
+        const int progressBarSteps = 100;
 
         public MainWindow()
         {
@@ -82,8 +83,13 @@ namespace CETOGravity
                 var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
                 var yTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].Y.Position);
 
-                progressBar.Maximum = timeSpan;
-                context.OnTick += (c, _) => Dispatcher.Invoke(() => progressBar.Value = ((PhysicalContext<Entities>)c).Timer);
+                var progress = ContextProgressTracker<Entities>.FromTime
+                (
+                    context,
+                    timeSpan,
+                    Enumerable.Range(1, progressBarSteps).Select(i => timeSpan * i / progressBarSteps).ToArray()
+                );
+                progress.OnCheckPoint += (c, _) => Dispatcher.Invoke(() => progressBar.Value = progress.Progress);
                 _currOperation = new CancellationTokenSource();
 
                 await Task.Run(() => context.Tick(timeSpan, _currOperation.Token, false));
