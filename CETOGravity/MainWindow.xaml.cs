@@ -25,7 +25,6 @@ namespace CETOGravity
         enum Entities { Ship, Planet }
 
         CancellationTokenSource _currOperation;
-        const int progressBarSteps = 100;
 
         public MainWindow()
         {
@@ -61,6 +60,9 @@ namespace CETOGravity
                 var dt = double.Parse(dtBox.Text);
                 var timeSpan = double.Parse(timeSpanBox.Text);
 
+                var interval = ulong.Parse(renderingIntervalBox.Text);
+                var progressBarSteps = uint.Parse(progressBarStepsBox.Text);
+
                 var context = new PhysicalContext<Entities>(timePerTick: dt, capacity: 2);
                 context.AddEntity
                 (
@@ -87,14 +89,13 @@ namespace CETOGravity
                 (
                     context,
                     timeSpan,
-                    Enumerable.Range(1, progressBarSteps).Select(i => timeSpan * i / progressBarSteps).ToArray()
+                    Enumerable.Range(1, (int)progressBarSteps).Select(i => timeSpan * i / progressBarSteps).ToArray()
                 );
                 progress.OnCheckPoint += (c, _) => Dispatcher.Invoke(() => progressBar.Value = progress.Progress);
                 _currOperation = new CancellationTokenSource();
 
                 await Task.Run(() => context.Tick(timeSpan, _currOperation.Token, false));
 
-                var interval = ulong.Parse(renderingIntervalBox.Text);
                 var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
                             $"Start velocity = ({xVelBox.Text}; {yVelBox.Text})\n" +
                             $"Mass = {shipMassBox.Text}, K = {kValBox.Text}, Alpha = {alphaValueBox.Text}";
@@ -133,9 +134,9 @@ namespace CETOGravity
 
                 progressBar.Value = 0;
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
-                MessageBox.Show($"Your input is in invalid format.");
+                MessageBox.Show(ex.Message);
             }
         }
 

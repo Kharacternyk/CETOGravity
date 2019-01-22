@@ -25,10 +25,10 @@
         <oxy:PlotView Name="plotY" Grid.Row="1" Grid.Column="1"></oxy:PlotView>
         <oxy:PlotView Name="orbitPlot" Grid.RowSpan="2"></oxy:PlotView>
         <UniformGrid Columns="2" Grid.Row="2" Grid.Column="0">
-            <GroupBox Header="Axises" BorderBrush="LightSlateGray">
+            <GroupBox Header="Axises">
                 <ScrollViewer>
                     <StackPanel>
-                        <GroupBox Header="X axis" BorderBrush="LightSlateGray">
+                        <GroupBox Header="X axis">
                             <ScrollViewer>
                                 <StackPanel>
                                     <GroupBox Header="Position">
@@ -40,7 +40,7 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </GroupBox>
-                        <GroupBox Header="Y axis" BorderBrush="LightSlateGray">
+                        <GroupBox Header="Y axis">
                             <ScrollViewer>
                                 <StackPanel>
                                     <GroupBox Header="Position">
@@ -55,7 +55,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </GroupBox>
-            <GroupBox Header="General" BorderBrush="LightSlateGray">
+            <GroupBox Header="General">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="Ship mass">
@@ -78,11 +78,14 @@
             </GroupBox>
         </UniformGrid>
         <UniformGrid Columns="2" Grid.Column="1" Grid.Row="2">
-            <GroupBox Header="Rendering params" BorderBrush="LightSlateGray">
+            <GroupBox Header="Rendering params">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="Rendering interval">
                             <TextBox Name="renderingIntervalBox">100</TextBox>
+                        </GroupBox>
+                        <GroupBox Header="Progress bar steps count">
+                            <TextBox Name="progressBarStepsBox">100</TextBox>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
