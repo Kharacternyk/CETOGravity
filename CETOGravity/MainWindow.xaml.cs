@@ -82,8 +82,8 @@ namespace CETOGravity
                     c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], alpha, k)
                 );
 
-                var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position);
-                var yTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].Y.Position);
+                var xTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].X.Position, interval);
+                var yTracker = new ContextTracker<Entities, double>(context, c => c[Entities.Ship].Y.Position, interval);
 
                 var progress = ContextProgressTracker<Entities>.FromTime
                 (
@@ -102,28 +102,23 @@ namespace CETOGravity
 
                 var xSeries = new LineSeries()
                 {
+                    CanTrackerInterpolatePoints = false,
                     Title = title
                 };
-                for (ulong i = 0; i < context.Ticks; ++i)
-                {
-                    if (i % interval == 0) xSeries.Points.Add(new DataPoint(i * dt, xTracker[i]));
-                }
                 var ySeries = new LineSeries()
                 {
+                    CanTrackerInterpolatePoints = false,
                     Title = title
                 };
-                for (ulong i = 0; i < context.Ticks; ++i)
-                {
-                    if (i % interval == 0) ySeries.Points.Add(new DataPoint(i * dt, yTracker[i]));
-                }
                 var orbitSeries = new LineSeries()
                 {
+                    CanTrackerInterpolatePoints = false,
                     Title = title
                 };
-                for (ulong i = 0; i < context.Ticks; ++i)
-                {
-                    if (i % interval == 0) orbitSeries.Points.Add(new DataPoint(xTracker[i], yTracker[i]));
-                }
+
+                xSeries.Points.AddRange(from p in xTracker select new DataPoint(p.Key * dt, p.Value));
+                ySeries.Points.AddRange(from p in yTracker select new DataPoint(p.Key * dt, p.Value));
+                orbitSeries.Points.AddRange(xTracker.Zip(yTracker, (x, y) => new DataPoint(x.Value, y.Value)));
 
                 plotX.Model.Series.Add(xSeries);
                 plotY.Model.Series.Add(ySeries);
