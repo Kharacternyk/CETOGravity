@@ -24,7 +24,7 @@ namespace CETOGravity
     {
         enum Entities { Ship, Planet }
 
-        CancellationTokenSource _currOperation;
+        bool _isCancelationRequested;
 
         public MainWindow()
         {
@@ -55,10 +55,13 @@ namespace CETOGravity
         {
             try
             {
+                _isCancelationRequested = false;
+
                 var k = double.Parse(kValBox.Text);
                 var alpha = double.Parse(alphaValueBox.Text);
                 var dt = double.Parse(dtBox.Text);
                 var timeSpan = double.Parse(timeSpanBox.Text);
+                var planetRadius = double.Parse(planetRadiusBox.Text);
 
                 var interval = ulong.Parse(renderingIntervalBox.Text);
                 var progressBarSteps = uint.Parse(progressBarStepsBox.Text);
@@ -92,9 +95,37 @@ namespace CETOGravity
                     Enumerable.Range(1, (int)progressBarSteps).Select(i => timeSpan * i / progressBarSteps).ToArray()
                 );
                 progress.OnCheckPoint += (c, _) => Dispatcher.Invoke(() => progressBar.Value = progress.Progress);
-                _currOperation = new CancellationTokenSource();
 
-                await Task.Run(() => context.Tick(timeSpan, _currOperation.Token, false));
+                bool isCollisionAllowed = !(bool)planetCheckBox.IsChecked;
+                bool isSuccesful = await Task.Run
+                (
+                    !isCollisionAllowed 
+                    ?
+                    (() => context.Tick
+                    (
+                        timeSpan,
+                        c => !_isCancelationRequested,
+                        false
+                    ))
+                    :
+                    (Func<bool>)(() => context.Tick
+                    (
+                        timeSpan,
+                        c =>
+                            !_isCancelationRequested &&
+                            (
+                                c[Entities.Ship].X.Position * c[Entities.Ship].X.Position +
+                                c[Entities.Ship].Y.Position * c[Entities.Ship].Y.Position >=
+                                planetRadius * planetRadius
+                            ),
+                        false
+                    ))
+                );
+
+                if (!isSuccesful && !_isCancelationRequested)
+                {
+                    Task.Run(() => MessageBox.Show("Ship has crashed"));
+                }
 
                 var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
                             $"Start velocity = ({xVelBox.Text}; {yVelBox.Text})\n" +
@@ -162,7 +193,12 @@ namespace CETOGravity
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            _currOperation?.Cancel();
+            _isCancelationRequested = true;
+        }
+
+        private void PlanetCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            planetRadiusBox.IsEnabled = !planetRadiusBox.IsEnabled;
         }
     }
 }

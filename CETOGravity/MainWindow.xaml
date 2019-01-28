@@ -81,6 +81,18 @@
             <GroupBox Header="Rendering params">
                 <ScrollViewer>
                     <StackPanel>
+                        <GroupBox Header="Planet rendering">
+                            <StackPanel>
+                                <CheckBox Name="planetCheckBox" Foreground="White" Click="PlanetCheckBox_Click">
+                                    Stop if collision occure
+                                </CheckBox>
+                                <GroupBox Header="Planet radius">
+                                    <TextBox Name="planetRadiusBox" IsEnabled="False">
+                                        6371
+                                    </TextBox>
+                                </GroupBox>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox Header="Rendering interval">
                             <TextBox Name="renderingIntervalBox">100</TextBox>
                         </GroupBox>
