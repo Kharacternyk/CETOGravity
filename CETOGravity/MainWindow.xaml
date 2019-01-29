@@ -58,20 +58,14 @@
             <GroupBox Header="General">
                 <ScrollViewer>
                     <StackPanel>
-                        <GroupBox Header="Ship mass">
-                            <TextBox Name="shipMassBox">1</TextBox>
-                        </GroupBox>
                         <GroupBox Header="K value">
                             <TextBox Name="kValBox">3,9844e5</TextBox>
                         </GroupBox>
                         <GroupBox Header="Alpha value">
                             <TextBox Name="alphaValueBox">0</TextBox>
                         </GroupBox>
-                        <GroupBox Header="dt">
-                            <TextBox Name="dtBox">1</TextBox>
-                        </GroupBox>
-                        <GroupBox Header="Time span">
-                            <TextBox Name="timeSpanBox">86400</TextBox>
+                        <GroupBox Header="Planet radius">
+                            <TextBox Name="planetRadiusBox"> 6371 </TextBox>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
@@ -81,17 +75,11 @@
             <GroupBox Header="Rendering params">
                 <ScrollViewer>
                     <StackPanel>
-                        <GroupBox Header="Planet rendering">
-                            <StackPanel>
-                                <CheckBox Name="planetCheckBox" Foreground="White" Click="PlanetCheckBox_Click">
-                                    Stop if collision occure
-                                </CheckBox>
-                                <GroupBox Header="Planet radius">
-                                    <TextBox Name="planetRadiusBox" IsEnabled="False">
-                                        6371
-                                    </TextBox>
-                                </GroupBox>
-                            </StackPanel>
+                        <GroupBox Header="dt">
+                            <TextBox Name="dtBox">1</TextBox>
+                        </GroupBox>
+                        <GroupBox Header="Time span">
+                            <TextBox Name="timeSpanBox">86400</TextBox>
                         </GroupBox>
                         <GroupBox Header="Rendering interval">
                             <TextBox Name="renderingIntervalBox">100</TextBox>

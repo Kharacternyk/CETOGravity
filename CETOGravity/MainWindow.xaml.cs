@@ -80,7 +80,7 @@ namespace CETOGravity
                         new AxisStatus(double.Parse(xPosBox.Text), double.Parse(xVelBox.Text)),
                         new AxisStatus(double.Parse(yPosBox.Text), double.Parse(yVelBox.Text)),
                         new AxisStatus(),
-                        double.Parse(shipMassBox.Text)
+                        1 
                     ),
                     c => ModifiedGravityLaw<Entities>(c[Entities.Ship], c[Entities.Planet], alpha, k)
                 );
@@ -96,19 +96,9 @@ namespace CETOGravity
                 );
                 progress.OnCheckPoint += (c, _) => Dispatcher.Invoke(() => progressBar.Value = progress.Progress);
 
-                bool isCollisionAllowed = !(bool)planetCheckBox.IsChecked;
                 bool isSuccesful = await Task.Run
                 (
-                    !isCollisionAllowed 
-                    ?
-                    (() => context.Tick
-                    (
-                        timeSpan,
-                        c => !_isCancelationRequested,
-                        false
-                    ))
-                    :
-                    (Func<bool>)(() => context.Tick
+                    () => context.Tick
                     (
                         timeSpan,
                         c =>
@@ -119,7 +109,7 @@ namespace CETOGravity
                                 planetRadius * planetRadius
                             ),
                         false
-                    ))
+                    )
                 );
 
                 if (!isSuccesful && !_isCancelationRequested)
@@ -129,7 +119,7 @@ namespace CETOGravity
 
                 var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
                             $"Start velocity = ({xVelBox.Text}; {yVelBox.Text})\n" +
-                            $"Mass = {shipMassBox.Text}, K = {kValBox.Text}, Alpha = {alphaValueBox.Text}";
+                            $"dt = {dtBox.Text}, K = {kValBox.Text}, Alpha = {alphaValueBox.Text}";
 
                 var xSeries = new LineSeries()
                 {
@@ -194,11 +184,6 @@ namespace CETOGravity
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             _isCancelationRequested = true;
-        }
-
-        private void PlanetCheckBox_Click(object sender, RoutedEventArgs e)
-        {
-            planetRadiusBox.IsEnabled = !planetRadiusBox.IsEnabled;
         }
     }
 }
