@@ -25,14 +25,14 @@
         <oxy:PlotView Name="plotY" Grid.Row="1" Grid.Column="1"></oxy:PlotView>
         <oxy:PlotView Name="orbitPlot" Grid.RowSpan="2"></oxy:PlotView>
         <UniformGrid Columns="2" Grid.Row="2" Grid.Column="0">
-            <GroupBox Header="Axises">
+            <GroupBox Header="Ship">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="X axis">
                             <ScrollViewer>
                                 <StackPanel>
                                     <GroupBox Header="Position">
-                                        <TextBox Name="xPosBox">42150</TextBox>
+                                        <TextBox Name="xPosBox">42150e3</TextBox>
                                     </GroupBox>
                                     <GroupBox Header="Velocity">
                                         <TextBox Name="xVelBox">0</TextBox>
@@ -47,7 +47,7 @@
                                         <TextBox Name="yPosBox">0</TextBox>
                                     </GroupBox>
                                     <GroupBox Header="Velocity">
-                                        <TextBox Name="yVelBox">3,0746</TextBox>
+                                        <TextBox Name="yVelBox">3,0746e3</TextBox>
                                     </GroupBox>
                                 </StackPanel>
                             </ScrollViewer>
@@ -59,7 +59,7 @@
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="K value">
-                            <TextBox Name="kValBox">3,9844e5</TextBox>
+                            <TextBox Name="kValBox">3,9844e14</TextBox>
                         </GroupBox>
                         <GroupBox Header="Alpha value">
                             <TextBox Name="alphaValueBox">0</TextBox>
@@ -72,7 +72,7 @@
             </GroupBox>
         </UniformGrid>
         <UniformGrid Columns="2" Grid.Column="1" Grid.Row="2">
-            <GroupBox Header="Rendering params">
+            <GroupBox Header="Simulation">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="dt">
