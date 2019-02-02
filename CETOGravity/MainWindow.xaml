@@ -65,7 +65,7 @@
                             <TextBox Name="alphaValueBox">0</TextBox>
                         </GroupBox>
                         <GroupBox Header="Planet radius">
-                            <TextBox Name="planetRadiusBox"> 6371 </TextBox>
+                            <TextBox Name="planetRadiusBox"> 6371e3 </TextBox>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
