@@ -25,7 +25,7 @@
         <oxy:PlotView Name="plotY" Grid.Row="1" Grid.Column="1"></oxy:PlotView>
         <oxy:PlotView Name="orbitPlot" Grid.RowSpan="2"></oxy:PlotView>
         <UniformGrid Columns="2" Grid.Row="2" Grid.Column="0">
-            <GroupBox Header="Ship">
+            <GroupBox Header="Ship" Name="ShipPanel">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="X axis">
@@ -55,7 +55,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </GroupBox>
-            <GroupBox Header="General">
+            <GroupBox Header="General" Name="GenPanel">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="K value">
@@ -72,7 +72,7 @@
             </GroupBox>
         </UniformGrid>
         <UniformGrid Columns="2" Grid.Column="1" Grid.Row="2">
-            <GroupBox Header="Simulation">
+            <GroupBox Header="Simulation" Name="SimPanel">
                 <ScrollViewer>
                     <StackPanel>
                         <GroupBox Header="dt">
@@ -91,7 +91,7 @@
                 </ScrollViewer>
             </GroupBox>
             <StackPanel VerticalAlignment="Center">
-                <Button Click="EvalButton_Click"> _Eval </Button>
+                <Button Name="EvalButton" Click="EvalButton_Click"> _Eval </Button>
                 <Button Click="CancelButton_Click"> _Cancel </Button>
                 <Button Click="ClearButton_Click"> Cle_ar </Button>
             </StackPanel>

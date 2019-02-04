@@ -55,6 +55,7 @@ namespace CETOGravity
         {
             try
             {
+                SetPanelEnablity(false);
                 _isCancelationRequested = false;
 
                 var k = double.Parse(kValBox.Text);
@@ -149,6 +150,7 @@ namespace CETOGravity
                 orbitPlot.InvalidatePlot();
 
                 progressBar.Value = 0;
+                SetPanelEnablity(true);
             }
             catch (Exception ex)
             {
@@ -184,6 +186,14 @@ namespace CETOGravity
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             _isCancelationRequested = true;
+        }
+
+        private void SetPanelEnablity(bool isEnable)
+        {
+            ShipPanel.IsEnabled = isEnable;
+            GenPanel.IsEnabled = isEnable;
+            SimPanel.IsEnabled = isEnable;
+            EvalButton.IsEnabled = isEnable;
         }
     }
 }
