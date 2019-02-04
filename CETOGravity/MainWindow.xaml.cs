@@ -115,7 +115,7 @@ namespace CETOGravity
 
                 if (!isSuccesful && !_isCancelationRequested)
                 {
-                    Task.Run(() => MessageBox.Show("Ship has crashed"));
+                    Task.Run(() => MessageBox.Show($"Ship has crashed at {context.Timer}"));
                 }
 
                 var title = $"Start position = ({xPosBox.Text}; {yPosBox.Text})\n" +
