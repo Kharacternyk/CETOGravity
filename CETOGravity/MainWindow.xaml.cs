@@ -145,6 +145,7 @@ namespace CETOGravity
                 plotX.Model.Series.Add(xSeries);
                 plotY.Model.Series.Add(ySeries);
                 orbitPlot.Model.Series.Add(orbitSeries);
+                orbitPlot.Model.PlotType = PlotType.Cartesian;
                 plotX.InvalidatePlot();
                 plotY.InvalidatePlot();
                 orbitPlot.InvalidatePlot();
